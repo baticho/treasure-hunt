@@ -93,14 +93,23 @@ To build the React frontend:
    cd frontend
    ```
 
-2. **Install Dependencies**:
-   Install the required dependencies for the frontend:
+2. **Create .env.local File:
+   Create a .env.local file in the frontend directory and add the required environment variables. For example:
+   
+   ```plaintext
+   REACT_APP_API_URL=http://localhost:8080/
+   ```
+   Replace http://localhost:8080/ with your actual API URL.
+   
 
+3. **Install Dependencies**:
+   Install the required dependencies for the frontend:
+   
    ```bash
    npm install
    ```
 
-3. **Build the Frontend**:
+4. **Build the Frontend**:
    Run the following command to build the React frontend:
 
    ```bash
