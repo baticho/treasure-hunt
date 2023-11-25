@@ -43,15 +43,14 @@ To start only the PostgreSQL container:
 1. **Navigate to the Project Directory**:
    Open a terminal/command prompt and navigate to the directory containing your `docker-compose.yml` file.
 
-2. **Start the PostgreSQL Container**:
-   Run the following command to start the PostgreSQL container:
+2. **Build and Start the PostgreSQL Container**:
+   Run the following command to build and start the services using the specified configuration:
 
-   ```bash
-   docker-compose up -d db
-   ```
-
-   This command will start the PostgreSQL container in detached mode (`-d`), running it in the background.
-
+```bash
+docker-compose -f docker-compose.local.yml up --build -d
+```
+This command will build the containers and start the services specified in 
+the local.yml file in detached mode (-d), running them in the background.
 ### 4. Creating a New Virtual Environment and Installing Requirements
 
 To create a new virtual environment and install the project requirements:
