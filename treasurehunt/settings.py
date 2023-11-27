@@ -79,7 +79,7 @@ ROOT_URLCONF = 'treasurehunt.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'frontend/build']
+        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'frontend/dist']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -136,7 +136,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'frontend/build/static'),
+    os.path.join(BASE_DIR, 'frontend/dist/assets'),
 )
 
 MEDIA_URL = '/media/'
