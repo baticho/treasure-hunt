@@ -1,5 +1,5 @@
 
-# Django REST API with React Frontend and PostgreSQL using Docker Compose
+# Django REST API with React Frontend
 
 This repository contains a Docker Compose configuration for 
 a Django REST API with PostgreSQL. Below are the steps to start 
