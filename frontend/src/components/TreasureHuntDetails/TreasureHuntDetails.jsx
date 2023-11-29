@@ -36,28 +36,46 @@ const TreasureHuntDetails = () => {
     }
 
     return (
-        <section className={styles["treasure-hunt-details"]}>
-            <h1>Treasure Hunt Details</h1>
-            <div className={styles["info-section"]}>
-                <div className={styles["treasure-hunt-header"]}>
-                    <img className={styles["treasure-hunt-img"]} src={currentTreasureHunt.picture} />
-                    <h1>{currentTreasureHunt.name}</h1>
-                    <span className={styles["location"]}>Start Location: {currentTreasureHunt.start_location}</span>
-                    <p className={styles["type"]}>{currentTreasureHunt.name}</p>
-                </div>
-                <p className={styles["text"]}>
-                    {currentTreasureHunt.description}
+        <section className={styles["treasure-hunt-details"]} style={{ backgroundImage: `url(${currentTreasureHunt.picture})` }}>
+            <div className={styles["treasure-hunt-info"]}>
+                <h1 className={styles["treasure-hunt-title"]}>{currentTreasureHunt.name}</h1>
+                <p className={styles["treasure-hunt-description"]}>
+                {currentTreasureHunt.description}
                 </p>
+                <div className={styles["treasure-hunt-start"]}>
+                <p>Start Location: <span className={styles["start-location"]}>{currentTreasureHunt.start_location}</span></p>
+                </div>
+                <div className={styles["treasure-hunt-creator"]}>
+                    <p>Creator: <span className={styles["creator-name"]}>{currentTreasureHunt.user}</span></p>
+                </div>
+                <div className={styles["treasure-hunt-rating"]}>
+                    <div className={styles["rating"]}>
+                    Rating:
+                        {[...Array(5)].map((_, index) => (
+                            <span
+                                key={index}
+                                className={index < currentTreasureHunt.score ? styles["filled-star"] : styles["empty-star"]}
+                            >
+                                ☆
+                            </span>
+                        ))}
+                    </div>
+                </div>
+                <div className={styles["buttons"]}>
                 {isOwner &&
-                    <div className={styles["buttons"]}>
+                    <>
                         <Link to={`/treasure-hunts/${treasureHuntId}/edit`} className={styles["button"]}>
                             Edit
                         </Link>
-                        <button onClick={treasureHuntDeleteHandler} className={styles["button"]}>
+                        <a onClick={treasureHuntDeleteHandler} className={styles["button"]}>
                             Delete
-                        </button>
-                    </div>
+                        </a>
+                    </>
                 }
+                </div>
+            </div>
+            <div className={styles["start-button"]}>
+                <button className={styles["button"]}>Start</button>
             </div>
         </section>
     );
