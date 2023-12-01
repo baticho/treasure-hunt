@@ -2,7 +2,8 @@ from rest_framework import viewsets, status, views
 from rest_framework.response import Response
 
 from .models import TreasureHunt, Clue, Hint, Game, Score
-from .serializers import TreasureHuntSerializer, ClueSerializer, HintSerializer, GameSerializer, ScoreSerializer
+from .serializers import TreasureHuntSerializer, ClueSerializer, HintSerializer, GameSerializer, ScoreSerializer, \
+    TreasureHuntUpdateSerializer
 from ..common.permissions import AllowAnyGET
 
 
@@ -10,6 +11,12 @@ class TreasureHuntViewSet(viewsets.ModelViewSet):
     queryset = TreasureHunt.objects.all()
     serializer_class = TreasureHuntSerializer
     permission_classes = [AllowAnyGET]
+
+    def get_serializer_class(self):
+        if self.action == 'update' or self.action == 'partial_update':
+            return TreasureHuntUpdateSerializer
+        else:
+            return TreasureHuntSerializer
 
 
 class ClueViewSet(viewsets.ModelViewSet):

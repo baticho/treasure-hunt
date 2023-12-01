@@ -10,6 +10,7 @@ class TreasureHuntSerializer(serializers.ModelSerializer):
     class Meta:
         model = TreasureHunt
         fields = '__all__'
+        read_only_fields = ('user',)
 
     def get_score(self, obj):
         logged_in_user = self.context['request'].user if 'request' in self.context else None
@@ -21,6 +22,12 @@ class TreasureHuntSerializer(serializers.ModelSerializer):
 
         average_score = obj.score_set.aggregate(Avg('score'))['score__avg']
         return average_score if average_score else 0
+
+
+class TreasureHuntUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TreasureHunt
+        fields = ('id', 'name', 'description', 'start_location', 'picture',)
 
 
 class ClueSerializer(serializers.ModelSerializer):
