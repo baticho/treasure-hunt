@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { TreasureHuntContext } from '../../contexts/TreasureHuntContext';
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -6,6 +6,8 @@ import { useAuthContext } from '../../contexts/AuthContext';
 import styles from './TreasureHuntDetails.module.css';
 
 import * as treasureHuntService from '../../services/treasureHuntService';
+import * as scoreService from '../../services/scoreService';
+
 
 const TreasureHuntDetails = () => {
     const navigate = useNavigate();
@@ -14,6 +16,8 @@ const TreasureHuntDetails = () => {
     const { treasureHuntId } = useParams();
 
     const currentTreasureHunt = selectTreasureHunt(treasureHuntId);
+    const [selectedStars, setSelectedStars] = useState(currentTreasureHunt.score);
+    const [showPopup, setShowPopup] = useState(false); // State to control the popup visibility
 
     const isOwner = currentTreasureHunt.user === auth.user?.pk;
 
@@ -33,7 +37,29 @@ const TreasureHuntDetails = () => {
                     navigate('/catalog');
                 })
         }
-    }
+    };
+
+    const updateRating = (newRating) => {
+        const data = {
+            score: newRating,
+            treasure_hunt: currentTreasureHunt.id,
+        };
+        scoreService.newScore(data);
+    };
+
+    const handleStarClick = (starIndex) => {
+        if (auth?.user) {
+            const newRating = starIndex + 1;
+            setSelectedStars(newRating);
+            updateRating(newRating);
+        } else {
+            // Show the popup message if the user is not logged in
+            setShowPopup(true);
+            setTimeout(() => {
+                setShowPopup(false);
+            }, 3000); // Hide the popup after 3 seconds (adjust as needed)
+        }
+    };
 
     return (
         <section className={styles["treasure-hunt-details"]} style={{ backgroundImage: `url(${currentTreasureHunt.picture})` }}>
@@ -54,17 +80,20 @@ const TreasureHuntDetails = () => {
                         {[...Array(5)].map((_, index) => (
                             <span
                                 key={index}
-                                className={index < currentTreasureHunt.score ? styles["filled-star"] : styles["empty-star"]}
+                                className={index < selectedStars ? styles["filled-star"] : styles["empty-star"]}
+                                onClick={() => handleStarClick(index)}
                             >
                                 ☆
                             </span>
                         ))}
                     </div>
+                    {showPopup && <div className={styles["need-login"]}>Please log in to give a rating.</div>}
+                    
                 </div>
                 <div className={styles["buttons"]}>
                 {isOwner &&
                     <>
-                        <Link to={`/treasure-hunts/${treasureHuntId}/edit`} className={styles["button"]}>
+                        <Link to={`/treasure-hnuts/${treasureHuntId}/edit`} className={styles["button"]}>
                             Edit
                         </Link>
                         <a onClick={treasureHuntDeleteHandler} className={styles["button"]}>

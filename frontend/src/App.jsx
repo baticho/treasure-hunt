@@ -25,7 +25,6 @@ function App() {
             <div id="box">
                 <Header />
 
-                {/* Main Content */}
                 <TreasureHuntProvider>
                     <main id="main-content" className="main">
                         <Routes>

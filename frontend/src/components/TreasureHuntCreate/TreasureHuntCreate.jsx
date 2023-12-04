@@ -1,70 +1,92 @@
-import { useContext } from 'react';
-
+import { useState, useEffect, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import styles from './TreasureHuntCreate.module.css';
-
-import { TreasureHuntContext } from '../../contexts/TreasureHuntContext';
 import * as treasureHuntService from '../../services/treasureHuntService';
+import { TreasureHuntContext } from '../../contexts/TreasureHuntContext';
 
-const TreasureHuntCreate = () => {
-    const { treasureHuntAdd } = useContext(TreasureHuntContext);
+const CreateTreasureHunt = () => {
+    const { treasureHuntCreate } = useContext(TreasureHuntContext);
+    const navigate = useNavigate();
 
-    const onSubmit = (e) => {
+    const [treasureHunt, setTreasureHunt] = useState({
+        name: '',
+        start_location: '',
+        description: '',
+        picture: '',
+    });
+
+    const onSubmit = async (e) => {
         e.preventDefault();
+        
+        const values = Object.fromEntries(new FormData(e.currentTarget));
 
-        const treasureHuntData = Object.fromEntries(new FormData(e.target));
+        try {
+            const result = await treasureHuntService.create(values);
+            treasureHuntCreate(result);
+            navigate(`/catalog/`);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
-        treasureHuntService.create(treasureHuntData)
-            .then(result => {
-                treasureHuntAdd(result)
-            });
+    const onChange = (e) => {
+        setTreasureHunt(state => ({
+            ...state,
+            [e.target.name]: e.target.value
+        }));
     };
 
     return (
-        <section id="create-page" className={styles["create-page"]}>
+        <section className={styles['create-page']}>
             <form id="create" onSubmit={onSubmit}>
-                <div className={styles["container"]}>
+                <div className="container">
                     <h1>Create Treasure Hunt</h1>
-                    <label htmlFor="leg-title">Tresure hunt name:</label>
+                    <label htmlFor="name">Title:</label>
                     <input
                         type="text"
                         id="name"
                         name="name"
-                        placeholder="Enter tresure hunt name..."
-                        className={styles["input"]}
+                        value={treasureHunt.name}
+                        onChange={onChange}
+                        className={styles.input}
                     />
-                    <label htmlFor="start_location">Start location:</label>
+                    <label htmlFor="start_location">Start Location:</label>
                     <input
                         type="text"
                         id="start_location"
                         name="start_location"
-                        placeholder="Enter start location..."
-                        className={styles["input"]}
+                        value={treasureHunt.start_location}
+                        onChange={onChange}
+                        className={styles.input}
                     />
-                    <label htmlFor="end_location">End location:</label>
+                    <label htmlFor="description">Summary:</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        value={treasureHunt.description}
+                        onChange={onChange}
+                        className={styles.description}
+                    />
+                    <label htmlFor="picture">Image:</label>
                     <input
                         type="text"
-                        id="end_location"
-                        name="end_location"
-                        placeholder="Enter end location..."
-                        className={styles["input"]}
-                    />
-
-                    <label htmlFor="description">Summary:</label>
-
-                    <textarea name="description" id="description" defaultValue={""} className={styles["description"]} />
-
-                    <label htmlFor="picture">Image:</label>
-
-                    <input
-                        type="file"
                         id="picture"
                         name="picture"
-                        placeholder="Upload a photo..."
+                        value={treasureHunt.picture}
+                        onChange={onChange}
+                        className={styles.input}
                     />
-
-
+                    {treasureHunt.picture && (
+                        <img
+                            id="selectedImage"
+                            className={styles['current-img']}
+                        value={treasureHunt.picture}
+                        src={treasureHunt.picture}
+                            alt={treasureHunt.name}
+                        />
+                    )}
                     <input
-                        className={`${styles["btn"]} ${styles["submit"]}`}
+                        className={`${styles.btn} ${styles.submit}`}
                         type="submit"
                         value="Create Treasure Hunt"
                     />
@@ -74,4 +96,4 @@ const TreasureHuntCreate = () => {
     );
 };
 
-export default TreasureHuntCreate;
+export default CreateTreasureHunt;

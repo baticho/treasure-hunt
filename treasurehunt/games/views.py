@@ -11,6 +11,10 @@ class TreasureHuntViewSet(viewsets.ModelViewSet):
     serializer_class = TreasureHuntSerializer
     permission_classes = [AllowAnyGET]
 
+    def perform_create(self, serializer):
+        user = self.request.user
+        serializer.save(user=user)
+
 
 class ClueViewSet(viewsets.ModelViewSet):
     queryset = Clue.objects.all()

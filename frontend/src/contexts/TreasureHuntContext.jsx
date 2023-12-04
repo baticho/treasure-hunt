@@ -14,9 +14,9 @@ const treasureHuntReducer = (state, action) => {
             return [...state, action.payload];
         case 'FETCH_TREASURE_HUNT_DETAILS':
         case 'EDIT_TREASURE_HUNT':
-            return state.map(x => x._id === action.treasureHuntId ? action.payload : x);
+            return state.map(x => x.id == action.treasureHuntId ? action.payload : x);
         case 'REMOVE_TREASURE_HUNT':
-            return state.filter(x => x._id !== action.treasureHuntId);
+            return state.filter(x => x.id != action.treasureHuntId);
         default:
             return state;
     }
@@ -55,7 +55,7 @@ export const TreasureHuntProvider = ({
     }
 
 
-    const treasureHuntAdd = (treasureHuntData) => {
+    const treasureHuntCreate = (treasureHuntData) => {
         dispatch({
             type: 'ADD_TREASURE_HUNT',
             payload: treasureHuntData,
@@ -81,7 +81,7 @@ export const TreasureHuntProvider = ({
     return (
         <TreasureHuntContext.Provider value={{
             treasureHunts,
-            treasureHuntAdd,
+            treasureHuntCreate,
             treasureHuntEdit,
             fetchTreasureHuntDetails,
             selectTreasureHunt,
