@@ -51,7 +51,7 @@ class Profile(models.Model):
         )
     )
 
-    picture = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    picture = models.URLField(null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
 

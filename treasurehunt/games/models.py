@@ -10,7 +10,7 @@ class TreasureHunt(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
-    picture = models.ImageField(upload_to='treasure_hunt_pictures/', null=True, blank=True)
+    picture = models.URLField()
     start_location = models.CharField(max_length=255)
     end_location = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -20,7 +20,7 @@ class Clue(models.Model):
     treasure_hunt = models.ForeignKey(TreasureHunt, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
-    picture = models.ImageField(upload_to='clue_pictures/', null=True, blank=True)
+    picture = models.URLField(null=True, blank=True)
     order = models.PositiveIntegerField()
 
 

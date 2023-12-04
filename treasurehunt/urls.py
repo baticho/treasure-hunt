@@ -14,5 +14,5 @@ urlpatterns = [
                   path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
                   path('api-token-auth/', auth_token_views.obtain_auth_token),
                   path('api/accounts/', include('treasurehunt.accounts.urls')),
-                  # re_path(r'ui/.*', TemplateView.as_view(template_name='index.html'), name='home'),
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  # re_path(r'^(?!api/).*', TemplateView.as_view(template_name='index.html'), name='home'),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
