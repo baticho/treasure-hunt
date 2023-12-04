@@ -24,6 +24,10 @@ const request = async (method, url, data) => {
         }
         const response = await buildRequest;
 
+        if (response.status === 204) {
+            return null;
+        }
+
         const result = await response.json();
 
         return result;
