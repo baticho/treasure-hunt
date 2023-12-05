@@ -1,6 +1,6 @@
 import * as request from "./requester";
 
-const baseUrl = `${import.meta.env.VITE_API_URL}/treasure-hunts/`;
+const baseUrl = `${import.meta.env.VITE_API_URL || 'api'}/treasure-hunts/`;
 
 export const getAll = () => request.get(baseUrl);
 

@@ -1,6 +1,7 @@
 import * as request from "./requester";
 
-const baseUrl = `${import.meta.env.VITE_API_URL}/accounts`;
+const baseUrl = `${import.meta.env.VITE_API_URL || 'api'}/accounts`;
+
 
 export const login = (username, password) => 
     request.post(`${baseUrl}/login/`, { username, password });

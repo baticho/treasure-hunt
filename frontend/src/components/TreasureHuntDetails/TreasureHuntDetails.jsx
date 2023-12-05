@@ -17,7 +17,7 @@ const TreasureHuntDetails = () => {
 
     const currentTreasureHunt = selectTreasureHunt(treasureHuntId);
     const [selectedStars, setSelectedStars] = useState(currentTreasureHunt.score);
-    const [showPopup, setShowPopup] = useState(false); // State to control the popup visibility
+    const [showPopup, setShowPopup] = useState(false);
 
     const isOwner = currentTreasureHunt.user === auth.user?.pk;
 
@@ -53,11 +53,10 @@ const TreasureHuntDetails = () => {
             setSelectedStars(newRating);
             updateRating(newRating);
         } else {
-            // Show the popup message if the user is not logged in
             setShowPopup(true);
             setTimeout(() => {
                 setShowPopup(false);
-            }, 3000); // Hide the popup after 3 seconds (adjust as needed)
+            }, 3000);
         }
     };
 
