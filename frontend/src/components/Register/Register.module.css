@@ -97,3 +97,15 @@ label[for="female"] {
     border-radius: 10px;
     padding: 5px;
 }
+
+.error {
+    border: 2px solid red;
+}
+
+.field-error {
+    color: red;
+    font-size: 24px;
+    margin-top: 5px;
+    display: block;
+    text-align: center;
+}

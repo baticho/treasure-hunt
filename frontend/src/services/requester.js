@@ -24,15 +24,19 @@ const request = async (method, url, data) => {
         }
         const response = await buildRequest;
 
-        if (response.status === 204) {
-            return null;
+
+        if (response.ok) {
+            if (response.status === 204) {
+                return null;
+            }
+            const result = await response.json();
+            return result;
+        } else {
+            const errorResponse = await response.json();
+            throw new Error(`${JSON.stringify(errorResponse)}`);
         }
-
-        const result = await response.json();
-
-        return result;
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 };
 
