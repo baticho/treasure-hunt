@@ -1,11 +1,11 @@
 body {
-    background-image: url('../images/wooden-background-with-nautical-decor.jpg');
+    background-image: url('https://img.freepik.com/free-photo/wooden-background-with-nautical-decor_93675-129577.jpg');
     background-attachment: fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-}
+  }
 
 header {
     background-color: #5e5048;
