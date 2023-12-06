@@ -39,6 +39,7 @@ TH_APPS = (
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + TH_APPS
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
