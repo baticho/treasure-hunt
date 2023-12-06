@@ -15,11 +15,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         user = User.objects.create(
-            username="InitialUser",
+            username="TestUser",
             email="initial_user@treasure.hunt",
-            password=make_password(os.getenv('DB_PASSWORD', 'new_pass')),
+            password=make_password("123"),
         )
-        profile = Profile.objects.create(
+        Profile.objects.create(
             first_name="Initial",
             last_name="User",
             user=user,
