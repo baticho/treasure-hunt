@@ -1,15 +1,6 @@
 
 # Django REST API with React Frontend
 
-This repository contains a Docker Compose configuration for 
-a Django REST API with PostgreSQL. Below are the steps to start 
-the PostgreSQL container and create a new Django app.
-
-## Prerequisites
-
-- Docker installed on your machine ([Install Docker](https://docs.docker.com/get-docker/))
-- Basic understanding of Docker, Django, and Docker Compose
-
 ## Getting Started
 
 ### 1. Clone the Repository
@@ -27,31 +18,11 @@ Create a `.env` file in the project root and add the following configurations:
 DJANGO_SECRET_KEY=SECRETKEY
 DEBUG=True
 ALLOWED_HOSTS=127.0.0.1,localhost
-POSTGRES_DB=postgres
-POSTGRES_HOST=db
-POSTGRES_PORT=5432
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
 ```
 
 Make sure to adjust the values based on your specific requirements.
 
-### 3. Starting PostgreSQL Container
-
-To start only the PostgreSQL container:
-
-1. **Navigate to the Project Directory**:
-   Open a terminal/command prompt and navigate to the directory containing your `docker-compose.yml` file.
-
-2. **Build and Start the PostgreSQL Container**:
-   Run the following command to build and start the services using the specified configuration:
-
-```bash
-docker-compose -f docker-compose.local.yml up --build -d
-```
-This command will build the containers and start the services specified in 
-the local.yml file in detached mode (-d), running them in the background.
-### 4. Creating a New Virtual Environment and Installing Requirements
+### 3. Creating a New Virtual Environment and Installing Requirements
 
 To create a new virtual environment and install the project requirements:
 
@@ -80,6 +51,18 @@ To create a new virtual environment and install the project requirements:
 
    ```bash
    pip install -r requirements.txt
+   ```
+
+### 4. Database Setup
+   In this project wi will use sqlite.
+1. **To apply migrations and populate the database with initial data**:
+   ```bash
+   # Apply migrations
+   python manage.py makemigrations
+   python manage.py migrate
+   
+   # Populate the database with predefined data
+   python manage.py populate_data
    ```
 
 ### 5. Building React Frontend
@@ -118,7 +101,7 @@ To build the React frontend:
 
    This command will compile and build the React app into static files.
 
-### 6. Starting Django App
+### 5. Starting Django App
 
 To start the Django app:
 
