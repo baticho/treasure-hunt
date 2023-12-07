@@ -1,5 +1,5 @@
 import * as request from "./requester";
 
-const baseUrl = `${import.meta.env.VITE_API_URL || 'api'}/scores/`;
+const baseUrl = `http://0.0.0.0:8040/api/scores/`;
 
 export const newScore = (scoreData) => request.post(baseUrl, scoreData);
