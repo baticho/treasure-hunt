@@ -22,9 +22,6 @@ const TreasureHuntDetails = () => {
     const isOwner = currentTreasureHunt.user === auth.user?.pk;
 
     useEffect(() => {
-        (async () => {
-            const treasureHuntDetails = await treasureHuntService.getOne(treasureHuntId);
-        })();
         setSelectedStars(currentTreasureHunt.score);
     }, [currentTreasureHunt])
 
