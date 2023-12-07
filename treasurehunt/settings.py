@@ -69,7 +69,8 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
-    "http://localhost:8080",
+    "http://localhost:8040",
+    "https://treasure-hunt-bg-a449fa748856.herokuapp.com"
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE"]
