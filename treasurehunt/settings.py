@@ -182,3 +182,4 @@ SIMPLE_JWT = {
 }
 
 CSRF_TRUSTED_ORIGINS = ["https://treasure-hunt-bg-a449fa748856.herokuapp.com"]
+CORS_ORIGIN_WHITELIST = ["https://treasure-hunt-bg-a449fa748856.herokuapp.com"]
