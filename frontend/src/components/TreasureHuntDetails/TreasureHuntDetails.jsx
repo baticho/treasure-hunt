@@ -25,7 +25,8 @@ const TreasureHuntDetails = () => {
         (async () => {
             const treasureHuntDetails = await treasureHuntService.getOne(treasureHuntId);
         })();
-    }, [])
+        setSelectedStars(currentTreasureHunt.score);
+    }, [currentTreasureHunt])
 
     const treasureHuntDeleteHandler = () => {
         const confirmation = window.confirm('Are you sure you want to delete this treasure hunt?');
