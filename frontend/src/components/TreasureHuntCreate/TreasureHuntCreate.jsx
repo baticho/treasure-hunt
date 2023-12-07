@@ -67,7 +67,7 @@ const CreateTreasureHunt = () => {
                         onChange={onChange}
                         className={styles.description}
                     />
-                    <label htmlFor="picture">Image:</label>
+                    <label htmlFor="picture">Image url:</label>
                     <input
                         type="text"
                         id="picture"

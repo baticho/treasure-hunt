@@ -44,6 +44,7 @@ const TreasureHuntDetails = () => {
             score: newRating,
             treasure_hunt: currentTreasureHunt.id,
         };
+        console.log(data);
         scoreService.newScore(data);
     };
 
