@@ -41,7 +41,7 @@ function App() {
                                 </PrivateRoute>
                             )} />
                             <Route element={<TreasureHuntOwner />}>
-                                <Route path="/treasure-hnuts/:treasureHuntId/edit" element={<TreasureHuntEdit />} />
+                                <Route path="/treasure-hunts/:treasureHuntId/edit" element={<TreasureHuntEdit />} />
                             </Route>
                             <Route element={<PrivateRoute />}>
                                 <Route path="/logout" element={<Logout />} />
