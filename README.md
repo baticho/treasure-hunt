@@ -1,6 +1,11 @@
 
 # Django REST API with React Frontend
 
+## Deployed App
+
+The app is deployed and accessible at [Treasure Hunt](https://treasure-hunt-bg-a449fa748856.herokuapp.com/).
+
+
 ## Getting Started
 
 ### 1. Clone the Repository
