@@ -180,3 +180,5 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
 }
+
+CSRF_TRUSTED_ORIGINS = ["https://treasure-hunt-bg-a449fa748856.herokuapp.com"]
