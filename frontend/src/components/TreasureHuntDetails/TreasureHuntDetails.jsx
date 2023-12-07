@@ -11,7 +11,7 @@ import * as scoreService from '../../services/scoreService';
 
 const TreasureHuntDetails = () => {
     const navigate = useNavigate();
-    const { selectTreasureHunt, treasureHuntRemove } = useContext(TreasureHuntContext);
+    const { selectTreasureHunt, treasureHuntScore, treasureHuntRemove } = useContext(TreasureHuntContext);
     const { auth } = useAuthContext();
     const { treasureHuntId } = useParams();
 
@@ -39,13 +39,18 @@ const TreasureHuntDetails = () => {
         }
     };
 
-    const updateRating = (newRating) => {
+    const updateRating = async (newRating) => {
         const data = {
             score: newRating,
             treasure_hunt: currentTreasureHunt.id,
         };
-        console.log(data);
-        scoreService.newScore(data);
+        try {
+            const result = await scoreService.newScore(data);
+            treasureHuntScore(treasureHuntId, result);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        
     };
 
     const handleStarClick = (starIndex) => {

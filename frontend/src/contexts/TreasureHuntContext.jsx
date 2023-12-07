@@ -15,6 +15,8 @@ const treasureHuntReducer = (state, action) => {
         case 'FETCH_TREASURE_HUNT_DETAILS':
         case 'EDIT_TREASURE_HUNT':
             return state.map(x => x.id == action.treasureHuntId ? action.payload : x);
+        case 'EDIT_SCORE':
+            return state.map(x => x.id == action.treasureHuntId ? { ...x, score: action.payload.score } : x );
         case 'REMOVE_TREASURE_HUNT':
             return state.filter(x => x.id != action.treasureHuntId);
         default:
@@ -72,6 +74,14 @@ export const TreasureHuntProvider = ({
         });
     };
 
+    const treasureHuntScore = (treasureHuntId, treasureHuntData) => {
+        dispatch({
+            type: 'EDIT_SCORE',
+            payload: treasureHuntData,
+            treasureHuntId,
+        });
+    };
+
     const treasureHuntRemove = (treasureHuntId) => {
         dispatch({
             type: 'REMOVE_TREASURE_HUNT',
@@ -83,6 +93,7 @@ export const TreasureHuntProvider = ({
             treasureHunts,
             treasureHuntCreate,
             treasureHuntEdit,
+            treasureHuntScore,
             fetchTreasureHuntDetails,
             selectTreasureHunt,
             treasureHuntRemove
