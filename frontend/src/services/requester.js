@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 const request = async (method, url, data) => {
     try {
         const user = localStorage.getItem('auth');
@@ -17,7 +19,8 @@ const request = async (method, url, data) => {
                 method,
                 headers: {
                     ...headers,
-                    'content-type': 'application/json'
+                    'content-type': 'application/json',
+                    'X-CSRFToken':Cookies.get('csrftoken')
                 },
                 body: JSON.stringify(data)
             });
