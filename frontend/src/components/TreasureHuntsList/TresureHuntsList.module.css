@@ -18,3 +18,9 @@
     justify-content: space-around;
     align-items: center;
 }
+
+@media screen and (max-width: 800px) {
+.treasure-hunts {
+    flex-direction: column;
+}
+}
