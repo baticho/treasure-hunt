@@ -97,3 +97,19 @@ label[for="female"] {
     border-radius: 10px;
     padding: 5px;
 }
+
+@media screen and (max-width: 800px) {
+    .register-page {
+        max-width: 450px;
+    }
+    label {
+        font-size: 20px;
+    }
+    .form-header  {
+        font-size: 2.2rem;
+    }
+    .input {
+        padding: 20px;
+        font-size: 20px;
+    }
+}

@@ -117,3 +117,18 @@
     left: 10px;
     width: auto;
 }
+
+@media screen and (max-width: 1020px) {
+.treasure-hunt-details {
+    height: 500px;
+}
+.treasure-hunt-info {
+    width: 50%;
+}
+}
+
+@media screen and (max-width: 800px) {
+.treasure-hunt-info {
+    width: 80%;
+}
+}
