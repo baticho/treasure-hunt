@@ -23,7 +23,10 @@ const Home = () => {
                     <h1>Latest Treasure Hunts</h1>
                     <div className={styles["treasure-hunts"]}>
                         {treasureHunts.length > 0
-                            ? treasureHunts.map(treasureHunt => <TreasureHunt key={treasureHunt.id} treasureHunt={treasureHunt} />)
+                            ? treasureHunts
+                                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                                .slice(0, 4)
+                                .map(treasureHunt => <TreasureHunt key={treasureHunt.id} treasureHunt={treasureHunt} />)
                             : <p className={styles["no-articles"]}>No treasure hunts yet</p>
                         }
                     </div>
