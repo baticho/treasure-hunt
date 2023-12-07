@@ -10,7 +10,6 @@ class TreasureHuntViewSet(viewsets.ModelViewSet):
     queryset = TreasureHunt.objects.all()
     serializer_class = TreasureHuntSerializer
     permission_classes = [AllowAnyGET]
-    permission_classes = [AllowAnyGET]
 
     def perform_create(self, serializer):
         user = self.request.user

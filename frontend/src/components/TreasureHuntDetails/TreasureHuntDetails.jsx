@@ -15,11 +15,18 @@ const TreasureHuntDetails = () => {
     const { auth } = useAuthContext();
     const { treasureHuntId } = useParams();
 
-    const currentTreasureHunt = selectTreasureHunt(treasureHuntId);
+    const [currentTreasureHunt, setCurrentTreasureHunt] = useState(selectTreasureHunt(treasureHuntId));
     const [selectedStars, setSelectedStars] = useState(currentTreasureHunt.score);
     const [showPopup, setShowPopup] = useState(false);
 
     const isOwner = currentTreasureHunt.user === auth.user?.pk;
+
+    useEffect(() => {
+        (async () => {
+            const treasureHuntDetails = await treasureHuntService.getOne(treasureHuntId);
+            setCurrentTreasureHunt(treasureHuntDetails);
+        })();
+    }, [treasureHuntId])
 
     useEffect(() => {
         setSelectedStars(currentTreasureHunt.score);
