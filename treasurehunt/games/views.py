@@ -31,6 +31,7 @@ class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class ScoreView(views.APIView):
 
     def post(self, request):
