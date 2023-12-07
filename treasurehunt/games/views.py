@@ -5,8 +5,6 @@ from .models import TreasureHunt, Clue, Hint, Game, Score
 from .serializers import TreasureHuntSerializer, ClueSerializer, HintSerializer, GameSerializer, ScoreSerializer
 from ..common.permissions import AllowAnyGET
 
-from django.views.decorators.csrf import csrf_exempt
-
 
 class TreasureHuntViewSet(viewsets.ModelViewSet):
     queryset = TreasureHunt.objects.all()
@@ -34,7 +32,7 @@ class GameViewSet(viewsets.ModelViewSet):
 
 
 class ScoreView(views.APIView):
-    @csrf_exempt
+
     def post(self, request):
         user = request.user
         score_value = int(request.data.get('score'))  # Convert score to an integer
