@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status, views
+from rest_framework import viewsets, status, views, permissions
 from rest_framework.response import Response
 
 from .models import TreasureHunt, Clue, Hint, Game, Score
@@ -9,7 +9,7 @@ from ..common.permissions import AllowAnyGET
 class TreasureHuntViewSet(viewsets.ModelViewSet):
     queryset = TreasureHunt.objects.all()
     serializer_class = TreasureHuntSerializer
-    permission_classes = [AllowAnyGET]
+    permission_classes = [permissions.AllowAny]
 
     def perform_create(self, serializer):
         user = self.request.user
