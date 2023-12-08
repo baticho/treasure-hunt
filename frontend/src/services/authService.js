@@ -3,10 +3,10 @@ import * as request from "./requester";
 let baseUrl;
 
 if (import.meta.env.VITE_API_URL) {
-  baseUrl = `${import.meta.env.VITE_API_URL}/accounts/`;
+  baseUrl = `${import.meta.env.VITE_API_URL}/accounts`;
 } else {
   const domain = window.location.origin;
-  baseUrl = `${domain}/api/accounts/`;
+  baseUrl = `${domain}/api/accounts`;
 }
 
 export const login = (username, password) => 
