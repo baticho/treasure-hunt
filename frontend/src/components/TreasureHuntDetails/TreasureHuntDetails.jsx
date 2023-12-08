@@ -103,7 +103,7 @@ const TreasureHuntDetails = () => {
                 <div className={styles["buttons"]}>
                 {isOwner &&
                     <>
-                        <Link to={`/treasure-hunts>${treasureHuntId}/edit`} className={styles["button"]}>
+                        <Link to={`/treasure-hunts/${treasureHuntId}/edit`} className={styles["button"]}>
                             Edit
                         </Link>
                         <a onClick={treasureHuntDeleteHandler} className={styles["button"]}>
