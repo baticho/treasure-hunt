@@ -1,14 +1,16 @@
-import { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './TreasureHuntCreate.module.css';
 import * as treasureHuntService from '../../services/treasureHuntService';
 import { TreasureHuntContext } from '../../contexts/TreasureHuntContext';
+import useForm from '../../hooks/useForm';
 
 const CreateTreasureHunt = () => {
     const { treasureHuntCreate } = useContext(TreasureHuntContext);
     const navigate = useNavigate();
 
-    const [treasureHunt, setTreasureHunt] = useState({
+
+    const { formValues, errors, handleChange, setErrors } = useForm({
         name: '',
         start_location: '',
         description: '',
@@ -18,23 +20,17 @@ const CreateTreasureHunt = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         
-        const values = Object.fromEntries(new FormData(e.currentTarget));
-
         try {
-            const result = await treasureHuntService.create(values);
+            const result = await treasureHuntService.create(formValues);
             treasureHuntCreate(result);
             navigate(`/catalog/`);
         } catch (error) {
-            console.error('Error:', error);
+            const errorString = error.toString().replace('Error: ', '');
+            const errors = JSON.parse(errorString);
+            setErrors(errors);
         }
     };
 
-    const onChange = (e) => {
-        setTreasureHunt(state => ({
-            ...state,
-            [e.target.name]: e.target.value
-        }));
-    };
 
     return (
         <section className={styles['create-page']}>
@@ -46,8 +42,8 @@ const CreateTreasureHunt = () => {
                         type="text"
                         id="name"
                         name="name"
-                        value={treasureHunt.name}
-                        onChange={onChange}
+                        value={formValues.name}
+                        onChange={handleChange}
                         className={styles.input}
                     />
                     <label htmlFor="start_location">Start Location:</label>
@@ -55,16 +51,16 @@ const CreateTreasureHunt = () => {
                         type="text"
                         id="start_location"
                         name="start_location"
-                        value={treasureHunt.start_location}
-                        onChange={onChange}
+                        value={formValues.start_location}
+                        onChange={handleChange}
                         className={styles.input}
                     />
                     <label htmlFor="description">Summary:</label>
                     <textarea
                         id="description"
                         name="description"
-                        value={treasureHunt.description}
-                        onChange={onChange}
+                        value={formValues.description}
+                        onChange={handleChange}
                         className={styles.description}
                     />
                     <label htmlFor="picture">Image url:</label>
@@ -72,17 +68,18 @@ const CreateTreasureHunt = () => {
                         type="text"
                         id="picture"
                         name="picture"
-                        value={treasureHunt.picture}
-                        onChange={onChange}
+                        value={formValues.picture}
+                        onChange={handleChange}
                         className={styles.input}
                     />
-                    {treasureHunt.picture && (
+                    {errors.picture && <span className={styles["field-error"]}>{errors.picture}</span>}
+                    {formValues.picture && (
                         <img
                             id="selectedImage"
                             className={styles['current-img']}
-                        value={treasureHunt.picture}
-                        src={treasureHunt.picture}
-                            alt={treasureHunt.name}
+                        value={formValues.picture}
+                        src={formValues.picture}
+                            alt={formValues.name}
                         />
                     )}
                     <input
