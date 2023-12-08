@@ -8,6 +8,7 @@
     transition: transform 0.3s ease-in-out;
     flex: 0 1 20%;
     position: relative;
+    text-align: center;
 }
   
 .treasure-hunt:hover {

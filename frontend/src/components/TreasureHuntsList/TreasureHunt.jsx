@@ -4,9 +4,6 @@ import styles from './TreasureHunt.module.css'
 
 const TreasureHunt = ({ treasureHunt }) => {
     
-
-
-    
     return (
         <div className={styles["treasure-hunt"]}>
             <div className={styles["image-wrap"]}>

@@ -19,7 +19,6 @@ class TreasureHuntSerializer(serializers.ModelSerializer):
             logged_in_user_score = obj.score_set.filter(user=logged_in_user)
             if logged_in_user_score:
                 return logged_in_user_score.first().score
-            return 0
 
         average_score = obj.score_set.aggregate(Avg('score'))['score__avg']
         return average_score if average_score else 0

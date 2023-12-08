@@ -16,7 +16,7 @@ const treasureHuntReducer = (state, action) => {
         case 'EDIT_TREASURE_HUNT':
             return state.map(x => x.id == action.treasureHuntId ? action.payload : x);
         case 'EDIT_SCORE':
-            return state.map(x => x.id == action.treasureHuntId ? { ...x, score: action.payload.score } : x );
+            return state.map(x => x.id == action.treasureHuntId ? { ...x, user_score: action.payload.score } : x );
         case 'REMOVE_TREASURE_HUNT':
             return state.filter(x => x.id != action.treasureHuntId);
         default:
