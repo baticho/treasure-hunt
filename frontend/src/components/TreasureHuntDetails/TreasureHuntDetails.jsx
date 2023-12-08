@@ -58,11 +58,11 @@ const TreasureHuntDetails = () => {
         
     };
 
-    const handleStarClick = (starIndex) => {
+    const handleStarClick = async (starIndex) => {
         if (auth?.user) {
             const newRating = starIndex + 1;
+            await updateRating(newRating);
             setSelectedStars(newRating);
-            updateRating(newRating);
         } else {
             setShowPopup(true);
             setTimeout(() => {
@@ -82,7 +82,7 @@ const TreasureHuntDetails = () => {
                 <p>Start Location: <span className={styles["start-location"]}>{currentTreasureHunt.start_location}</span></p>
                 </div>
                 <div className={styles["treasure-hunt-creator"]}>
-                    <p>Creator: <span className={styles["creator-name"]}>{currentTreasureHunt.user}</span></p>
+                    <p>Creator: <span className={styles["creator-name"]}>{currentTreasureHunt.creator}</span></p>
                 </div>
                 <div className={styles["treasure-hunt-rating"]}>
                     <div className={styles["rating"]}>

@@ -6,6 +6,7 @@ from .models import TreasureHunt, Clue, Hint, Game, Score
 
 class TreasureHuntSerializer(serializers.ModelSerializer):
     score = serializers.SerializerMethodField()
+    creator = serializers.SerializerMethodField()
 
     class Meta:
         model = TreasureHunt
@@ -22,6 +23,9 @@ class TreasureHuntSerializer(serializers.ModelSerializer):
 
         average_score = obj.score_set.aggregate(Avg('score'))['score__avg']
         return average_score if average_score else 0
+
+    def get_creator(self, obj):
+        return obj.user.username if obj.user.username else "No Creator"
 
 
 class ClueSerializer(serializers.ModelSerializer):
