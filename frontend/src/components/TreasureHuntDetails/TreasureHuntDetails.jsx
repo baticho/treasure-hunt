@@ -44,14 +44,14 @@ const TreasureHuntDetails = () => {
         }
     };
 
-    const updateRating = async (newRating) => {
+    const updateRating = (newRating) => {
         const data = {
             score: newRating,
             treasure_hunt: currentTreasureHunt.id,
         };
         try {
-            const result = await scoreService.newScore(data);
-            treasureHuntScore(treasureHuntId, result);
+            treasureHuntScore(treasureHuntId, newRating);
+            scoreService.newScore(data);
         } catch (error) {
             console.error('Error:', error);
         }
