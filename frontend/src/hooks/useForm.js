@@ -18,6 +18,14 @@ const useForm = (initialState = {}) => {
 
     const resetForm = () => {
         setFormValues(initialState);
+        setErrors({});
+    };
+
+    const setFormValuesExternally = (newFormValues) => {
+        setFormValues({
+            ...formValues,
+            ...newFormValues,
+        });
     };
 
     return {
@@ -26,6 +34,7 @@ const useForm = (initialState = {}) => {
         handleChange,
         resetForm,
         setErrors,
+        setFormValuesExternally,
     };
 };
 

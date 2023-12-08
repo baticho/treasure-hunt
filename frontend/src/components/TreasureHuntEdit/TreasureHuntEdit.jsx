@@ -1,25 +1,54 @@
-import { useState, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './TreasureHuntEdit.module.css';
 import * as treasureHuntService from '../../services/treasureHuntService';
 import { TreasureHuntContext } from '../../contexts/TreasureHuntContext';
+import useForm from '../../hooks/useForm';
 
 const EditTreasureHunt = () => {
     const { treasureHuntEdit } = useContext(TreasureHuntContext);
     const { treasureHuntId } = useParams();
     const navigate = useNavigate();
 
-    const [currentTreasureHunt, setCurrentTreasureHunt] = useState({
+    const { formValues, errors, handleChange, setErrors, setFormValuesExternally } = useForm({
         name: '',
         start_location: '',
         description: '',
         picture: '',
     });
 
+    const validateForm = () => {
+        let valid = true;
+        const errors = {};
+
+        if (!formValues.name || formValues.name.length > 50) {
+            errors.name = 'Name should be less than 50 characters';
+            valid = false;
+        }
+
+        if (!formValues.start_location || formValues.start_location.length > 40) {
+            errors.start_location = 'Start location should be less than 40 characters';
+            valid = false;
+        }
+
+        if (!formValues.name || !formValues.start_location || !formValues.description || !formValues.picture) {
+            errors.detail = 'All fields are required';
+            valid = false;
+        }
+
+        setErrors(errors);
+        return valid;
+    };
+
     useEffect(() => {
         treasureHuntService.getOne(treasureHuntId)
-        .then((treasureHuntData) => {
-            setCurrentTreasureHunt(treasureHuntData);
+        .then((treasureHunt) => {
+            setFormValuesExternally({
+                name: treasureHunt.name,
+                start_location: treasureHunt.start_location,
+                description: treasureHunt.description,
+                picture: treasureHunt.picture,
+            });
         })
         .catch((error) => {
             console.error('Error fetching treasure hunt:', error);
@@ -28,72 +57,73 @@ const EditTreasureHunt = () => {
     
     const onSubmit = async (e) => {
         e.preventDefault();
-        
-        const values = Object.fromEntries(new FormData(e.currentTarget));
+
+        if (!validateForm()) {
+            return;
+        }
 
         try {
-            const result = await treasureHuntService.edit(treasureHuntId, values);
+            const result = await treasureHuntService.edit(treasureHuntId, formValues);
             treasureHuntEdit(treasureHuntId, result);
-            navigate(`/catalog/${treasureHuntId}`);
+            navigate(`/catalog/`);
         } catch (error) {
-            console.error('Error:', error);
+            const errorString = error.toString().replace('Error: ', '');
+            const errors = JSON.parse(errorString);
+            setErrors(errors);
         }
     };
 
-    const onChange = (e) => {
-        setCurrentTreasureHunt(state => ({
-            ...state,
-            [e.target.name]: e.target.value
-        }));
-    };
 
     return (
         <section className={styles['edit-page']}>
-            <form id="edit" onSubmit={onSubmit}>
+            <form id="create" onSubmit={onSubmit}>
                 <div className="container">
-                    <h1>Edit Treasure Hunt</h1>
+                    <h1>Edut Treasure Hunt</h1>
                     <label htmlFor="name">Title:</label>
                     <input
                         type="text"
                         id="name"
                         name="name"
-                        value={currentTreasureHunt.name}
-                        onChange={onChange}
-                        className={styles.input}
+                        value={formValues.name}
+                        onChange={handleChange}
+                        className={`${styles['input']} ${errors.name ? 'error' : ''}`}
                     />
+                    {errors.name && <span className="field-error">{errors.name}</span>}
                     <label htmlFor="start_location">Start Location:</label>
                     <input
                         type="text"
                         id="start_location"
                         name="start_location"
-                        value={currentTreasureHunt.start_location}
-                        onChange={onChange}
-                        className={styles.input}
+                        value={formValues.start_location}
+                        onChange={handleChange}
+                        className={`${styles['input']} ${errors.start_location ? 'error' : ''}`}
                     />
+                    {errors.start_location && <span className="field-error">{errors.start_location}</span>}
                     <label htmlFor="description">Summary:</label>
                     <textarea
                         id="description"
                         name="description"
-                        value={currentTreasureHunt.description}
-                        onChange={onChange}
-                        className={styles.description}
+                        value={formValues.description}
+                        onChange={handleChange}
+                        className={`${styles['description']} ${errors.description ? 'error' : ''}`}
                     />
                     <label htmlFor="picture">Image url:</label>
                     <input
                         type="text"
                         id="picture"
                         name="picture"
-                        value={currentTreasureHunt.picture}
-                        onChange={onChange}
-                        className={styles.input}
+                        value={formValues.picture}
+                        onChange={handleChange}
+                        className={`${styles['input']} ${errors.picture ? 'error' : ''}`}
                     />
-                    {currentTreasureHunt.picture && (
+                    {errors.picture && <span className="field-error">{errors.picture}</span>}
+                    {formValues.picture && (
                         <img
                             id="selectedImage"
                             className={styles['current-img']}
-                        value={currentTreasureHunt.picture}
-                        src={currentTreasureHunt.picture}
-                            alt={currentTreasureHunt.name}
+                        value={formValues.picture}
+                        src={formValues.picture}
+                            alt={formValues.name}
                         />
                     )}
                     <input
@@ -101,6 +131,7 @@ const EditTreasureHunt = () => {
                         type="submit"
                         value="Edit Treasure Hunt"
                     />
+                    {errors.detail && <span className="field-error">{errors.detail}</span>}
                 </div>
             </form>
         </section>

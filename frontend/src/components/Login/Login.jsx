@@ -55,7 +55,7 @@ const Login = () => {
                         value={formValues.password}
                         onChange={handleChange}
                     />
-                    {errors.username && <span className={styles["field-error"]}>{errors.password}</span>}
+                    {errors.username && <span className="field-error">{errors.password}</span>}
                     <input type="submit" className={`${styles["btn"]} ${styles["submit"]}`} value="Login" />
                     {errors.detail && <span className="field-error">{errors.detail}</span>}
                     <p className={styles["field"]}>

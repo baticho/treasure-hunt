@@ -17,9 +17,36 @@ const CreateTreasureHunt = () => {
         picture: '',
     });
 
+    const validateForm = () => {
+        let valid = true;
+        const errors = {};
+
+        if (!formValues.name || formValues.name.length > 50) {
+            errors.name = 'Name should be less than 50 characters';
+            valid = false;
+        }
+
+        if (!formValues.start_location || formValues.start_location.length > 40) {
+            errors.start_location = 'Start location should be less than 40 characters';
+            valid = false;
+        }
+
+        if (!formValues.name || !formValues.start_location || !formValues.description || !formValues.picture) {
+            errors.detail = 'All fields are required';
+            valid = false;
+        }
+
+        setErrors(errors);
+        return valid;
+    };
+
     const onSubmit = async (e) => {
         e.preventDefault();
-        
+
+        if (!validateForm()) {
+            return;
+        }
+
         try {
             const result = await treasureHuntService.create(formValues);
             treasureHuntCreate(result);
@@ -44,8 +71,9 @@ const CreateTreasureHunt = () => {
                         name="name"
                         value={formValues.name}
                         onChange={handleChange}
-                        className={styles.input}
+                        className={`${styles['input']} ${errors.name ? 'error' : ''}`}
                     />
+                    {errors.name && <span className="field-error">{errors.name}</span>}
                     <label htmlFor="start_location">Start Location:</label>
                     <input
                         type="text"
@@ -53,15 +81,16 @@ const CreateTreasureHunt = () => {
                         name="start_location"
                         value={formValues.start_location}
                         onChange={handleChange}
-                        className={styles.input}
+                        className={`${styles['input']} ${errors.start_location ? 'error' : ''}`}
                     />
+                    {errors.start_location && <span className="field-error">{errors.start_location}</span>}
                     <label htmlFor="description">Summary:</label>
                     <textarea
                         id="description"
                         name="description"
                         value={formValues.description}
                         onChange={handleChange}
-                        className={styles.description}
+                        className={`${styles['description']} ${errors.description ? 'error' : ''}`}
                     />
                     <label htmlFor="picture">Image url:</label>
                     <input
@@ -70,9 +99,9 @@ const CreateTreasureHunt = () => {
                         name="picture"
                         value={formValues.picture}
                         onChange={handleChange}
-                        className={styles.input}
+                        className={`${styles['input']} ${errors.picture ? 'error' : ''}`}
                     />
-                    {errors.picture && <span className={styles["field-error"]}>{errors.picture}</span>}
+                    {errors.picture && <span className="field-error">{errors.picture}</span>}
                     {formValues.picture && (
                         <img
                             id="selectedImage"
@@ -87,6 +116,7 @@ const CreateTreasureHunt = () => {
                         type="submit"
                         value="Create Treasure Hunt"
                     />
+                    {errors.detail && <span className="field-error">{errors.detail}</span>}
                 </div>
             </form>
         </section>
