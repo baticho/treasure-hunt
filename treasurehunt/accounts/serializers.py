@@ -4,8 +4,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
 
 from treasurehunt.accounts.models import Profile, EmailTokenExpiration
 from treasurehunt.common.tokens import account_activation_token
@@ -46,6 +46,15 @@ class RegistrationSerializer(serializers.Serializer):
 
         user.save()
         return user_details
+
+    def validate_password(self, password):
+        if password != self.initial_data["password2"]:
+            raise serializers.ValidationError("Password fields didn't match.")
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            raise serializers.ValidationError(e)
+        return password
 
     def validate_username(self, value):
         user = User.objects.filter(username=value)
