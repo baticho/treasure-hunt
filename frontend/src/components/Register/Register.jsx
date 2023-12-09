@@ -19,10 +19,13 @@ const Register = ({ auth }) => {
         password2: '',
     });
 
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        return regex.test(password);
+    };
+
     const onSubmit = (e) => {
         e.preventDefault();
-
-        let hasErrors = false;
 
         if (formValues.password !== formValues.password2) {
             setErrors({
@@ -31,19 +34,24 @@ const Register = ({ auth }) => {
             return;
         }
 
+        if (!validatePassword(formValues.password)) {
+            setErrors({
+                password: 'Password should be at least 8 characters long and contain letters and numbers',
+            });
+            return;
+        }
+        const { username, email, first_name, last_name, password, password2 } = formValues;
         authService
-            .register(
-                formValues.username,
-                formValues.email,
-                formValues.first_name,
-                formValues.last_name,
-                formValues.password,
-                formValues.password2
-            )
-            .then((authData) => {
-                auth.userLogin(authData);
-                navigate('/');
-            
+            .register(username, email, first_name, last_name, password, password2)
+            .then(() => {
+                authService.login(username, password)
+                    .then((authData) => {
+                        auth.userLogin(authData);
+                        navigate('/');
+                    })
+                    .catch((loginError) => {
+                        console.error('Login after registration failed:', loginError);
+                    });
             })
             .catch((error) => {
                 const errorString = error.toString().replace('Error: ', '');
