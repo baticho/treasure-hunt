@@ -31,9 +31,11 @@ const EditTreasureHunt = () => {
             valid = false;
         }
 
-        if (!formValues.name || !formValues.start_location || !formValues.description || !formValues.picture) {
-            errors.detail = 'All fields are required';
-            valid = false;
+        for (const field in formValues) {
+            if (!formValues[field]) {
+                errors[field] = `This field is required`;
+                valid = false;
+            }
         }
 
         setErrors(errors);
@@ -107,6 +109,7 @@ const EditTreasureHunt = () => {
                         onChange={handleChange}
                         className={`${styles['description']} ${errors.description ? 'error' : ''}`}
                     />
+                    {errors.description && <span className="field-error">{errors.description}</span>}
                     <label htmlFor="picture">Image url:</label>
                     <input
                         type="text"
@@ -131,7 +134,6 @@ const EditTreasureHunt = () => {
                         type="submit"
                         value="Edit Treasure Hunt"
                     />
-                    {errors.detail && <span className="field-error">{errors.detail}</span>}
                 </div>
             </form>
         </section>
