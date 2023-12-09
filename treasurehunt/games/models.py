@@ -8,11 +8,11 @@ User = get_user_model()
 
 class TreasureHunt(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
     picture = models.URLField()
-    start_location = models.CharField(max_length=255)
-    end_location = models.CharField(max_length=255)
+    start_location = models.CharField(max_length=40)
+    end_location = models.CharField(max_length=40)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
