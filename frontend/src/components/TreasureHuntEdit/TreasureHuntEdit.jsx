@@ -4,6 +4,7 @@ import styles from './TreasureHuntEdit.module.css';
 import * as treasureHuntService from '../../services/treasureHuntService';
 import { TreasureHuntContext } from '../../contexts/TreasureHuntContext';
 import useForm from '../../hooks/useForm';
+import useDropboxUpload from '../../hooks/useDropboxUpload';
 
 const EditTreasureHunt = () => {
     const { treasureHuntEdit } = useContext(TreasureHuntContext);
@@ -16,6 +17,26 @@ const EditTreasureHunt = () => {
         description: '',
         picture: '',
     });
+
+    const {
+        uploading,
+        uploadedURL,
+        error,
+        uploadImageToDropbox,
+    } = useDropboxUpload();
+
+    useEffect(() => {
+        if (uploadedURL) {
+            setFormValuesExternally({ picture: uploadedURL });
+        }
+    }, [uploadedURL]);
+
+
+    const handleFileUpload = (event) => {
+        const file = event.target.files[0];
+
+        uploadImageToDropbox(file);
+    };
 
     const validateForm = () => {
         let valid = true;
@@ -110,22 +131,22 @@ const EditTreasureHunt = () => {
                         className={`${styles['description']} ${errors.description ? 'error' : ''}`}
                     />
                     {errors.description && <span className="field-error">{errors.description}</span>}
-                    <label htmlFor="picture">Image url:</label>
+                    <label htmlFor="picture">Image:</label>
                     <input
-                        type="text"
+                        type="file"
                         id="picture"
                         name="picture"
-                        value={formValues.picture}
-                        onChange={handleChange}
+                        onChange={handleFileUpload}
                         className={`${styles['input']} ${errors.picture ? 'error' : ''}`}
                     />
+                    {uploading && <p>Uploading...</p>}
+                    {error && <p>Error: {error.message}</p>}
                     {errors.picture && <span className="field-error">{errors.picture}</span>}
                     {formValues.picture && (
                         <img
                             id="selectedImage"
                             className={styles['current-img']}
-                        value={formValues.picture}
-                        src={formValues.picture}
+                            src={formValues.picture}
                             alt={formValues.name}
                         />
                     )}
