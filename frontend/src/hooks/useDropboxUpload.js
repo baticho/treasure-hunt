@@ -15,7 +15,10 @@ const useDropboxUpload = () => {
 
             const renamedFile = new File([file], uniqueFilename, { type: file.type });
 
-            const accessToken = 'sl.BrfL4keHtPyJyWi46Q0xzsfzWNt6XARGl_-WgvJw2dF3E048eoHLWY3oqoGAxsUkQn-PafjUpQeO8wyP63OpSPuSdVButLBiUnG2HHm-tUUNwaqOFwuxRT3h1yBok3ajrRidE4Dm4MTPOrbMbIxTJe8'; // Replace with your Dropbox access token
+            console.log(import.meta.env.VITE_DROPBOX_KEY);
+            console.log("sl.BrfL4keHtPyJyWi46Q0xzsfzWNt6XARGl_-WgvJw2dF3E048eoHLWY3oqoGAxsUkQn-PafjUpQeO8wyP63OpSPuSdVButLBiUnG2HHm-tUUNwaqOFwuxRT3h1yBok3ajrRidE4Dm4MTPOrbMbIxTJe8");
+
+            const accessToken = import.meta.env.VITE_DROPBOX_KEY;
             const dbx = new Dropbox({
                 accessToken,
             });
