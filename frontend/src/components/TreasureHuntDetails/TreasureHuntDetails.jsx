@@ -18,6 +18,8 @@ const TreasureHuntDetails = () => {
     const [currentTreasureHunt, setCurrentTreasureHunt] = useState(selectTreasureHunt(treasureHuntId));
     const [selectedStars, setSelectedStars] = useState(currentTreasureHunt.score);
     const [showPopup, setShowPopup] = useState(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [deleting, setDeleting] = useState(false);
 
     const isOwner = currentTreasureHunt.user === auth.user?.pk;
 
@@ -33,15 +35,24 @@ const TreasureHuntDetails = () => {
     }, [currentTreasureHunt])
 
     const treasureHuntDeleteHandler = () => {
-        const confirmation = window.confirm('Are you sure you want to delete this treasure hunt?');
+        setShowDeleteConfirmation(true);
+    };
 
-        if (confirmation) {
-            treasureHuntService.remove(treasureHuntId)
-                .then(() => {
-                    treasureHuntRemove(treasureHuntId);
-                    navigate('/catalog');
-                })
-        }
+    const confirmDelete = () => {
+        setDeleting(true);
+        treasureHuntService.remove(treasureHuntId)
+            .then(() => {
+                treasureHuntRemove(treasureHuntId);
+                navigate('/catalog');
+            })
+            .finally(() => {
+                setDeleting(false);
+                setShowDeleteConfirmation(false);
+            });
+    };
+
+    const cancelDelete = () => {
+        setShowDeleteConfirmation(false);
     };
 
     const updateRating = (newRating) => {
@@ -73,6 +84,23 @@ const TreasureHuntDetails = () => {
 
     return (
         <section className={styles["treasure-hunt-details"]} style={{ backgroundImage: `url(${currentTreasureHunt.picture})` }}>
+            {showDeleteConfirmation && (
+                <div className={styles['delete-confirmation']}>
+                    <div className={styles['confirmation-box']}>
+                        {deleting ? (
+                            <p>Deleting...</p>
+                        ) : (
+                            <>
+                                <p>Are you sure you want to delete this treasure hunt?</p>
+                                <div className={styles['confirmation-buttons']}>
+                                    <button onClick={confirmDelete}>Yes</button>
+                                    <button onClick={() => setShowDeleteConfirmation(false)}>No</button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
             <div className={styles["treasure-hunt-info"]}>
                 <h1 className={styles["treasure-hunt-title"]}>{currentTreasureHunt.name}</h1>
                 <p className={styles["treasure-hunt-description"]}>
