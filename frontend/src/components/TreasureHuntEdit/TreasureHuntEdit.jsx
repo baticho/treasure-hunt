@@ -12,10 +12,10 @@ const EditTreasureHunt = () => {
     const navigate = useNavigate();
 
     const { formValues, errors, handleChange, setErrors, setFormValuesExternally } = useForm({
-        name: '',
-        start_location: '',
-        description: '',
-        picture: '',
+        name: 'Loading...',
+        start_location: 'Loading...',
+        description: 'Loading...',
+        picture: 'Loading...',
     });
 
     const {

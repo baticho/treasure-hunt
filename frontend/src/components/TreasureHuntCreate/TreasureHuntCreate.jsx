@@ -121,7 +121,7 @@ const CreateTreasureHunt = () => {
                         id="picture"
                         name="picture"
                         onChange={handleFileUpload}
-                        className={`${styles['input']} ${errors.picture ? 'error' : ''}`}
+                        className={`${styles['file-input']} ${errors.picture ? 'error' : ''}`}
                     />
                     {uploading && <p>Uploading...</p>}
                     {error && <p>Error: {error.message}</p>}
