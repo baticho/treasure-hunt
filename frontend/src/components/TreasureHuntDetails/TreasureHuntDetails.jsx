@@ -7,6 +7,7 @@ import styles from './TreasureHuntDetails.module.css';
 
 import * as treasureHuntService from '../../services/treasureHuntService';
 import * as scoreService from '../../services/scoreService';
+import * as gameService from '../../services/gameService';
 
 
 const TreasureHuntDetails = () => {
@@ -51,10 +52,6 @@ const TreasureHuntDetails = () => {
             });
     };
 
-    const cancelDelete = () => {
-        setShowDeleteConfirmation(false);
-    };
-
     const updateRating = (newRating) => {
         const data = {
             score: newRating,
@@ -80,6 +77,15 @@ const TreasureHuntDetails = () => {
                 setShowPopup(false);
             }, 3000);
         }
+    };
+
+    const startGame = () => {
+        const gameData = {
+            user: auth.user?.pk,
+            treasure_hunt: treasureHuntId,
+        }
+        gameService.startGame(gameData);
+        navigate(`/game`);
     };
 
     return (
@@ -141,9 +147,13 @@ const TreasureHuntDetails = () => {
                 }
                 </div>
             </div>
-            <div className={styles["start-button"]}>
-                <button className={styles["button"]}>Start</button>
-            </div>
+            {auth?.user &&
+                <div className={styles["start-button"]}>
+                    <a to="/game" onClick={startGame} className={styles["button"]}>
+                        Start
+                    </a>
+                </div>
+            }
         </section>
     );
 };

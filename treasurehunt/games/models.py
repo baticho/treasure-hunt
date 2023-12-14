@@ -15,13 +15,19 @@ class TreasureHunt(models.Model):
     end_location = models.CharField(max_length=40)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Clue(models.Model):
     treasure_hunt = models.ForeignKey(TreasureHunt, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    answer = models.CharField(max_length=255)
     picture = models.URLField(null=True, blank=True)
-    order = models.PositiveIntegerField()
+    order = models.PositiveIntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
 
 
 class Hint(models.Model):
@@ -29,14 +35,30 @@ class Hint(models.Model):
     hint = models.CharField(max_length=255)
     bonus_minutes = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.hint
+
 
 class Game(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     treasure_hunt = models.ForeignKey(TreasureHunt, on_delete=models.DO_NOTHING)
-    start_time = models.DateTimeField(auto_now=True)
+    current_clue_index = models.PositiveIntegerField(default=0)
+    start_time = models.DateTimeField(default=timezone.now)
     end_time = models.DateTimeField(null=True, blank=True)
-    canceled = models.BooleanField(default=False)
+    is_canceled = models.BooleanField(default=False)
+    is_completed = models.BooleanField(default=False)
     bonus_minutes = models.IntegerField(default=0)
+
+    @property
+    def current_clue(self):
+        try:
+            clue = Clue.objects.get(treasure_hunt=self.treasure_hunt, order=self.current_clue_index)
+            return clue
+        except Clue.DoesNotExist:
+            return None
+
+    def __str__(self):
+        return f'{str(self.user)} - {self.treasure_hunt.name}'
 
 
 class Score(models.Model):

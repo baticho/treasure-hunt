@@ -27,8 +27,13 @@ class HintViewSet(viewsets.ModelViewSet):
 
 
 class GameViewSet(viewsets.ModelViewSet):
-    queryset = Game.objects.all()
     serializer_class = GameSerializer
+
+    def get_queryset(self):
+        current_user = self.request.user
+
+        unfinished_games = Game.objects.filter(user=current_user, is_completed=False)
+        return unfinished_games
 
 
 class ScoreView(views.APIView):

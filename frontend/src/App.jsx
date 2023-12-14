@@ -13,6 +13,7 @@ import TreasureHuntCreate from './components/TreasureHuntCreate/TreasureHuntCrea
 import TreasureHuntEdit from './components/TreasureHuntEdit/TreasureHuntEdit';
 import TresureHuntsList from './components/TreasureHuntsList/TresureHuntsList';
 import TresureHuntDetails from "./components/TreasureHuntDetails/TreasureHuntDetails";
+import GamePage from "./components/GamePage/GamePage";
 import './App.css';
 import TreasureHuntOwner from "./components/common/TreasureHuntOwner";
 import NotFound from "./components/NotFound/NotFound";
@@ -48,6 +49,7 @@ function App() {
                             </Route>
                             <Route path="/catalog" element={<TresureHuntsList />} />
                             <Route path="/catalog/:treasureHuntId" element={<TresureHuntDetails />} />
+                            <Route path="/game" element={<GamePage />} />
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     </main>
