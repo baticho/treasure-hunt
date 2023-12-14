@@ -104,6 +104,28 @@ label[for="female"] {
     margin: auto;
 }
 
+.game-completed {
+    margin: 20px;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.treasure-hunt {
+    font-size: 2rem;
+}
+
+.completed-time {
+    color: green;
+}
+
+.user {
+    font-style: italic;
+}
+
+
 @media screen and (max-width: 800px) {
     .login-page {
         max-width: 450px;

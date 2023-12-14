@@ -9,9 +9,8 @@ const GamePage = () => {
     const [game, setGame] = useState(null);
     const [timeDifference, setTimeDifference] = useState(null);
 
-    const { formValues, errors, handleChange, setErrors } = useForm({
+    const { formValues, errors, handleChange, setErrors, resetForm } = useForm({
         answer: '',
-        treasure_hunt: '',
     });
 
     useEffect(() => {
@@ -44,48 +43,81 @@ const GamePage = () => {
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        console.log(formValues.answer);
+    const validateForm = () => {
+        let valid = true;
+        const errors = {};
 
-        // authService.login(formValues.username, formValues.password)
-        // .catch((error) => {
-        //     const errorString = error.toString().replace('Error: ', '');
-        //     const errors = JSON.parse(errorString);
-        //     setErrors(errors);
-        // });
+        if (formValues.answer.trim() !== game.current_clue.answer) {
+            errors.answer = 'Wrong answer!';
+            valid = false;
+        }
+
+
+        setErrors(errors);
+        return valid;
+    };
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        try {
+            console.log(formValues, game.pk)
+            const result = await gameService.nextClueGame(formValues, game.pk);
+            console.log(result);
+            setGame(result);
+            resetForm();
+        } catch (error) {
+            const errorString = error.toString().replace('Error: ', '');
+            const errors = JSON.parse(errorString);
+            setErrors(errors);
+        }
     };
 
     return (
         <section id="game-page" className={styles["game-page"]}>
             {game ? (
                 <>
-                    <h2>Timer: {formatTime(timeDifference)}</h2>
-                    <form id="login" onSubmit={onSubmit}>
-                        <div className={styles["container"]}>
-                            <h1 className={styles["form-header"]}>{game.current_clue.title}</h1>
-                            <img className={styles["clue-img"]} src={game.current_clue.picture} alt={game.treasure_hunt}/>
-                            <label htmlFor="username">Answer:</label>
-                            <input
-                                type="text"
-                                id="answer"
-                                name="answer"
-                                placeholder="answer"
-                                className={`${styles['input']} ${errors.detail ? 'error' : ''}`}
-                                value={formValues.answer}
-                                onChange={handleChange}
-                            />
-                            {errors.answer && <span className="field-error">{errors.answer}</span>}
-                            <input type="submit" className={`${styles["btn"]} ${styles["submit"]}`} value="Answer" />
-                            {errors.detail && <span className="field-error">{errors.detail}</span>}
+                    {game.is_completed ? (
+                        <div className={styles["game-completed"]}>
+                            <h2>Game Completed:</h2>
+                            <p className={styles["treasure-hunt"]}>Treasure Hunt: {game.treasure_hunt_name}</p>
+                            <p className={styles["completed-time"]}>Completed Time: {formatTime(new Date(game.end_time) - new Date(game.start_time))}</p>
+                            <p className={styles["user"]}>User: {auth.user.user}</p>
                         </div>
-                    </form>
+                    
+                    ) : (
+                        <form id="login" onSubmit={onSubmit}>
+                            <div className={styles["container"]}>
+                                <h2>Timer: {formatTime(timeDifference)}</h2>
+                                <h1 className={styles["form-header"]}>{game.current_clue.title}</h1>
+                                <img className={styles["clue-img"]} src={game.current_clue.picture} alt={game.treasure_hunt}/>
+                                <label htmlFor="username">Answer:</label>
+                                <input
+                                    type="text"
+                                    id="answer"
+                                    name="answer"
+                                    placeholder="answer"
+                                    className={`${styles['input']} ${errors.answer ? 'error' : ''}`}
+                                    value={formValues.answer}
+                                    onChange={handleChange}
+                                />
+                                {errors.answer && <span className="field-error">{errors.answer}</span>}
+                                <input type="submit" className={`${styles["btn"]} ${styles["submit"]}`} value="Answer" />
+                                {errors.detail && <span className="field-error">{errors.detail}</span>}
+                            </div>
+                        </form>
+                    )}
                 </>
             ) : (
-                <h2>New Game</h2>
+                <h2>No Game</h2>
             )}
         </section>
     );
+    
 };
 
 export default GamePage;

@@ -1,3 +1,5 @@
+from django.db.models import Max
+from django.utils import timezone
 from rest_framework import viewsets, status, views
 from rest_framework.response import Response
 
@@ -37,8 +39,12 @@ class GameViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         current_user = self.request.user
 
-        unfinished_games = Game.objects.filter(user=current_user, is_completed=False)
-        return unfinished_games
+        current_game = Game.objects.filter(user=current_user)
+        if self.request.method == 'GET':
+            current_game = current_game.filter(is_completed=False, is_canceled=False)
+            return current_game
+
+        return current_game
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -52,6 +58,22 @@ class GameViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        current_clue_index = instance.current_clue_index
+
+        next_clue_index = Clue.objects.filter(treasure_hunt=instance.treasure_hunt , id__gt=current_clue_index).aggregate(Max('id'))['id__max']
+
+        if next_clue_index:
+            instance.current_clue_index = next_clue_index
+            instance.save()
+        else:
+            instance.is_completed = True
+            instance.end_time = timezone.now()
+            instance.save()
+
+        return super().update(request, *args, **kwargs)
 
 
 class ScoreView(views.APIView):

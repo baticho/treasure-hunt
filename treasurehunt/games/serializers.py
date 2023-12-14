@@ -51,14 +51,23 @@ class GameDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('treasure_hunt_name', 'start_time', 'bonus_minutes', 'current_clue',)
+        fields = (
+            'pk',
+            'treasure_hunt_name',
+            'start_time',
+            'end_time',
+            'bonus_minutes',
+            'current_clue',
+            'is_completed',
+            'is_canceled',
+        )
 
     def get_treasure_hunt_name(self, obj):
         return obj.treasure_hunt.name if obj.treasure_hunt else None
 
     def get_current_clue(self, obj):
         clue = Clue.objects.filter(pk=obj.current_clue_index).first()
-        clue_data = {'title': clue.title, 'picture': clue.picture}
+        clue_data = {'title': clue.title, 'picture': clue.picture, 'answer': clue.answer}
         return clue_data if clue else None
 
 
