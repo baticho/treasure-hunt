@@ -2,7 +2,8 @@ from rest_framework import viewsets, status, views
 from rest_framework.response import Response
 
 from .models import TreasureHunt, Clue, Hint, Game, Score
-from .serializers import TreasureHuntSerializer, ClueSerializer, HintSerializer, GameSerializer, ScoreSerializer
+from .serializers import TreasureHuntSerializer, ClueSerializer, HintSerializer, GameDetailSerializer, ScoreSerializer, \
+    GameCreateSerializer
 from ..common.permissions import AllowAnyGET
 
 
@@ -27,13 +28,30 @@ class HintViewSet(viewsets.ModelViewSet):
 
 
 class GameViewSet(viewsets.ModelViewSet):
-    serializer_class = GameSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return GameCreateSerializer
+        return GameDetailSerializer
 
     def get_queryset(self):
         current_user = self.request.user
 
         unfinished_games = Game.objects.filter(user=current_user, is_completed=False)
         return unfinished_games
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        current_user = self.request.user
+        existing_unfinished_games = Game.objects.filter(user=current_user, is_completed=False, is_canceled=False)
+        if existing_unfinished_games.exists():
+            return Response({"message": "You have an ongoing game."}, status=status.HTTP_400_BAD_REQUEST)
+
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class ScoreView(views.APIView):
