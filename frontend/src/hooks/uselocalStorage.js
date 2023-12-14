@@ -19,7 +19,7 @@ export const useLocalStorage = (key, defaultValue) => {
             const parsedData = JSON.parse(storedData);
             const storedTimestamp = parsedData.timestamp;
             const currentTimestamp = Date.now();
-            const timeDifference = (currentTimestamp - storedTimestamp) / (1000 * 60);
+            const timeDifference = (currentTimestamp - storedTimestamp) / (1000 * 60 * 24);
 
             if (timeDifference >= 60) {
                 setValue({});

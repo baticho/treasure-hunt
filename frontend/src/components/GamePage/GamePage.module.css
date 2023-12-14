@@ -1,26 +1,121 @@
-
-
-.catalog-page {
-    flex-grow: 1;
-    padding-left: 20px;
+.game-page {
+    position: relative;
+    width: 650px;
+    height: auto;
+    border-radius: 20px;
+    padding: 40px;
+    box-sizing: border-box;
+    background: #6c5e55;
+    margin: auto;
+    box-shadow: 0px 0px 32px 0px #49535e, -14px -14px 20px #191c21;
 }
-  
-.catalog-page h1 {
-    font-size: 2rem;
-    margin-bottom: 15px;
+
+
+.container {
+    padding: 40px;
+}
+
+.form-header {
+    margin-top: 15px;
+    font-weight: 900;
+    font-size: 2.7rem;
     text-align: center;
+    color: white;
+    letter-spacing: 1px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-bottom: 17px;
 }
 
-.treasure-hunts {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
+label,
+input {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+}
+
+label {
+    margin-bottom: 8px;
+    font-size: 27px;
+    color: white;
+    margin-top: 13px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+label:nth-of-type(2) {
+    margin-top: 20px;
+}
+
+input::placeholder {
+    color: rgba(184, 179, 179, 0.678);
+}
+
+
+label[for="female"] {
+    margin-top: 10px;
+}
+
+.input {
+    background: #ecf0f3;
+    padding: 30px;
+    padding-left: 20px;
+    height: 50px;
+    margin-top: 10px;
+    font-size: 24px;
+    border-radius: 50px;
+    box-shadow: inset 6px 6px 6px #c0c2c5, inset -6px -6px 6px white;
+}
+
+.btn.submit {
+    margin-top: 30px;
+    background: #9c9577;
+    height: 60px;
+    border-radius: 20px;
+    color: white;
+    font-size: 26px;
+    cursor: pointer;
+    font-weight: 900;
+    transition: 0.5s;
+}
+
+.btn.submit:hover {
+    color: white;
+    background-color: #b9b68f;
+}
+
+
+.no-profile {
+    position: absolute;
+    font-size: 18px;
+    bottom: 17px;
+    right: 8px;
+    text-decoration: none;
+    color: black;
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.clue-img{
+    max-height: 200px;
+    display: block;
+    margin: auto;
 }
 
 @media screen and (max-width: 800px) {
-.treasure-hunts {
-    flex-direction: column;
-}
+    .login-page {
+        max-width: 450px;
+    }
+    label {
+        font-size: 20px;
+    }
+    .form-header  {
+        font-size: 2.2rem;
+    }
+    .input {
+        padding: 20px;
+        font-size: 20px;
+    }
 }

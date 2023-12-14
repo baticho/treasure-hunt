@@ -79,14 +79,21 @@ const TreasureHuntDetails = () => {
         }
     };
 
-    const startGame = () => {
+    const startGame = async () => {
         const gameData = {
             user: auth.user?.pk,
             treasure_hunt: treasureHuntId,
+        };
+    
+        try {
+            await gameService.startGame(gameData);
+            navigate(`/game`);
+        } catch (error) {
+            console.log(error.message);
+            navigate(`/game`);
         }
-        gameService.startGame(gameData);
-        navigate(`/game`);
     };
+    
 
     return (
         <section className={styles["treasure-hunt-details"]} style={{ backgroundImage: `url(${currentTreasureHunt.picture})` }}>
