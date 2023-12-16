@@ -1,4 +1,4 @@
-from django.db.models import Max
+from django.db.models import Max, Avg, Prefetch
 from django.utils import timezone
 from rest_framework import viewsets, status, views
 from rest_framework.response import Response
@@ -10,7 +10,12 @@ from ..common.permissions import AllowAnyGET
 
 
 class TreasureHuntViewSet(viewsets.ModelViewSet):
-    queryset = TreasureHunt.objects.all()
+    queryset = (TreasureHunt.objects
+                .prefetch_related(Prefetch('score_set', queryset=Score.objects.select_related('user')))
+                .prefetch_related('score_set__user')
+                .annotate(avg_score=Avg('score__score'))
+                .select_related('user')
+                .all())
     serializer_class = TreasureHuntSerializer
     permission_classes = [AllowAnyGET]
 

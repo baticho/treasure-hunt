@@ -15,13 +15,15 @@ class TreasureHuntSerializer(serializers.ModelSerializer):
 
     def get_score(self, obj):
         logged_in_user = self.context['request'].user if 'request' in self.context else None
+
         if not isinstance(logged_in_user, AnonymousUser):
             logged_in_user_score = obj.score_set.filter(user=logged_in_user)
             if logged_in_user_score:
                 return logged_in_user_score.first().score
 
-        average_score = obj.score_set.aggregate(Avg('score'))['score__avg']
-        return average_score if average_score else 0
+        average_score = obj.avg_score if hasattr(obj, 'avg_score') else 0
+
+        return average_score
 
     def get_creator(self, obj):
         return obj.user.username if obj.user.username else "No Creator"
