@@ -11,4 +11,4 @@ if (import.meta.env.VITE_API_URL) {
 
 export const fetchGame = (userId) => request.get(`${baseUrl}?user=${userId}`);
 export const startGame = (gameData) => request.post(`${baseUrl}/`, gameData);
-export const nextClueGame = (gameData, gameId) => request.patch(`${baseUrl}/${gameId}/`, gameData);
+export const patchGame = (gameData, gameId) => request.patch(`${baseUrl}/${gameId}/`, gameData);

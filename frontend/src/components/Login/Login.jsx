@@ -22,7 +22,11 @@ const Login = () => {
         authService.login(formValues.username, formValues.password)
             .then(authData => {
                 userLogin(authData);
-                navigate('/');
+                if (authData.user.is_game_started) {
+                    navigate('/game');
+                } else {
+                    navigate('/');
+                }
             })
             .catch((error) => {
                 const errorString = error.toString().replace('Error: ', '');

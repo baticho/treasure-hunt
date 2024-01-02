@@ -9,16 +9,22 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from treasurehunt.accounts.models import Profile, EmailTokenExpiration
 from treasurehunt.common.tokens import account_activation_token
+from treasurehunt.games.models import Game
 
 User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
+    is_game_started = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ['pk', 'user', 'first_name', 'last_name', 'is_active', ]
+        fields = ['pk', 'user', 'first_name', 'last_name', 'is_active', 'is_game_started', ]
+
+    def get_is_game_started(self, obj):
+        started_game = Game.objects.filter(user=obj.user, is_canceled=False, is_completed=False).exists()
+        return started_game
 
 
 class RegistrationSerializer(serializers.Serializer):

@@ -3,11 +3,16 @@ import * as gameService from '../../services/gameService';
 import { useAuthContext } from "../../contexts/AuthContext";
 import useForm from "../../hooks/useForm";
 import styles from './GamePage.module.css'
+import { useNavigate } from "react-router-dom";
 
 const GamePage = () => {
     const { auth } = useAuthContext();
     const [game, setGame] = useState(null);
     const [timeDifference, setTimeDifference] = useState(null);
+    const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
+    const [canceling, setCanceling] = useState(false);
+
+    const navigate = useNavigate();
 
     const { formValues, errors, handleChange, setErrors, resetForm } = useForm({
         answer: '',
@@ -57,6 +62,22 @@ const GamePage = () => {
         return valid;
     };
 
+    const treasureHuntCancelHandler = () => {
+        setShowCancelConfirmation(true);
+    };
+
+    const confirmCancel = async () => {
+        try {
+            setCanceling(true);
+            await gameService.patchGame({is_canceled: true}, game.pk);
+            setCanceling(false);
+            setShowCancelConfirmation(false);
+            navigate(`/catalog/`);
+        } catch (error) {
+            console.error('Error cancelling game:', error);
+        }
+    };
+
     const onSubmit = async (e) => {
         e.preventDefault();
 
@@ -65,9 +86,7 @@ const GamePage = () => {
         }
 
         try {
-            console.log(formValues, game.pk)
-            const result = await gameService.nextClueGame(formValues, game.pk);
-            console.log(result);
+            const result = await gameService.patchGame(formValues, game.pk);
             setGame(result);
             resetForm();
         } catch (error) {
@@ -79,11 +98,32 @@ const GamePage = () => {
 
     return (
         <section id="game-page" className={styles["game-page"]}>
+            {showCancelConfirmation && (
+                <div className={styles['delete-confirmation']}>
+                    <div className={styles['confirmation-box']}>
+                        {canceling ? (
+                            <p>Canceling...</p>
+                        ) : (
+                            <>
+                                <p>Are you sure you want to cancel this treasure hunt?</p>
+                                <div className={styles['confirmation-buttons']}>
+                                    <button onClick={confirmCancel}>Yes</button>
+                                    <button onClick={() => setShowCancelConfirmation(false)}>No</button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
+            
             {game ? (
                 <>
+                    <button onClick={treasureHuntCancelHandler} className={styles["cancel-btn"]}>
+                        Cancel Game
+                    </button>
                     {game.is_completed ? (
                         <div className={styles["game-completed"]}>
-                            <h2>Game Completed:</h2>
+                            <h2>Game Completed</h2>
                             <p className={styles["treasure-hunt"]}>Treasure Hunt: {game.treasure_hunt_name}</p>
                             <p className={styles["completed-time"]}>Completed Time: {formatTime(new Date(game.end_time) - new Date(game.start_time))}</p>
                             <p className={styles["user"]}>User: {auth.user.user}</p>
@@ -113,7 +153,7 @@ const GamePage = () => {
                     )}
                 </>
             ) : (
-                <h2>No Game</h2>
+                <h2 style={{ textAlign: 'center' }}>No active game</h2>
             )}
         </section>
     );

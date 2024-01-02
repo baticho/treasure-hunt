@@ -6,6 +6,8 @@ import { useAuthContext } from '../../contexts/AuthContext';
 
 const Header = () => {
     const { auth } = useAuthContext();
+    const isGameStarted = auth?.user?.is_game_started;
+
 
     return (
         <header>
@@ -16,17 +18,17 @@ const Header = () => {
             </h1>
             <nav>
                 {auth && auth.user && <span>{auth.user.user}</span>}
-                <Link to="/catalog">All treasure hunts</Link>
-                {auth && auth.user 
-                    ? <div id="user" className={styles["user-section"]}>
-                        <Link to="/create">Create Treasure Hunt</Link>
-                        <Link to="/logout">Logout</Link>
+                {isGameStarted ? (
+                    <div id="user" className={styles["user-section"]}>
+                    <Link to="/game">Continue Game</Link>
+                    <Link to="/logout">Logout</Link>
                     </div>
-                    : <div id="guest" className={styles["user-section"]}>
-                        <Link to="/login">Login</Link>
-                        <Link to="/register">Register</Link>
+                ) : (
+                    <div id="guest" className={styles["user-section"]}>
+                    <Link to="/login">Login</Link>
+                    <Link to="/register">Register</Link>
                     </div>
-                }
+                )}
             </nav>
         </header>
     );

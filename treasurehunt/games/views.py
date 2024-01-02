@@ -10,14 +10,16 @@ from ..common.permissions import AllowAnyGET
 
 
 class TreasureHuntViewSet(viewsets.ModelViewSet):
-    queryset = (TreasureHunt.objects
-                .prefetch_related(Prefetch('score_set', queryset=Score.objects.select_related('user')))
-                .prefetch_related('score_set__user')
-                .annotate(avg_score=Avg('score__score'))
-                .select_related('user')
-                .all())
     serializer_class = TreasureHuntSerializer
     permission_classes = [AllowAnyGET]
+
+    def get_queryset(self):
+        queryset = (TreasureHunt.objects
+                    .prefetch_related('score_set')
+                    .select_related('user')
+                    .all())
+
+        return queryset
 
     def perform_create(self, serializer):
         user = self.request.user
