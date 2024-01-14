@@ -61,6 +61,11 @@ class Game(models.Model):
         return f'{str(self.user)} - {self.treasure_hunt.name}'
 
 
+class UsedHints(models.Model):
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    hint = models.ForeignKey(Hint, on_delete=models.CASCADE)
+
+
 class Score(models.Model):
     SCORE_MAX = 5
     SCORE_MAX_MESSAGE = 'Score cannot exceed 5.'

@@ -29,16 +29,25 @@ class TreasureHuntSerializer(serializers.ModelSerializer):
         return obj.user.username if obj.user.username else "No Creator"
 
 
-class ClueSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Clue
-        fields = '__all__'
-
-
 class HintSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hint
         fields = '__all__'
+
+
+class ClueSerializer(serializers.ModelSerializer):
+    hints = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Clue
+        fields = ('answer', 'picture', 'title', 'hints',)
+
+    def get_hints(self, obj):
+        hints = Hint.objects.filter(clue=obj.pk)
+        serialized_data = HintSerializer(hints, many=True).data
+        return serialized_data if hints else None
+
+
 
 
 class GameCreateSerializer(serializers.ModelSerializer):
@@ -69,8 +78,8 @@ class GameDetailSerializer(serializers.ModelSerializer):
 
     def get_current_clue(self, obj):
         clue = Clue.objects.filter(pk=obj.current_clue_index).first()
-        clue_data = {'title': clue.title, 'picture': clue.picture, 'answer': clue.answer}
-        return clue_data if clue else None
+        serialized_data = ClueSerializer(clue, many=False).data
+        return serialized_data if clue else None
 
 
 class ScoreSerializer(serializers.ModelSerializer):
