@@ -35,6 +35,12 @@ class HintSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UsedHintSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hint
+        fields = '__all__'
+
+
 class ClueSerializer(serializers.ModelSerializer):
     hints = serializers.SerializerMethodField()
 
@@ -46,8 +52,6 @@ class ClueSerializer(serializers.ModelSerializer):
         hints = Hint.objects.filter(clue=obj.pk)
         serialized_data = HintSerializer(hints, many=True).data
         return serialized_data if hints else None
-
-
 
 
 class GameCreateSerializer(serializers.ModelSerializer):

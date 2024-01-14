@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from .models import TreasureHunt, Clue, Hint, Game, Score, UsedHint
 from .serializers import TreasureHuntSerializer, ClueSerializer, HintSerializer, GameDetailSerializer, ScoreSerializer, \
-    GameCreateSerializer
+    GameCreateSerializer, UsedHintSerializer
 from ..common.permissions import AllowAnyGET
 
 
@@ -38,7 +38,7 @@ class HintViewSet(viewsets.ModelViewSet):
 
 class UsedHintsViewSet(viewsets.ModelViewSet):
     queryset = UsedHint.objects.all()
-    serializer_class = HintSerializer
+    serializer_class = UsedHintSerializer
 
 class GameViewSet(viewsets.ModelViewSet):
 

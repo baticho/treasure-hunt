@@ -7,6 +7,7 @@ router.register(r'treasure-hunts', TreasureHuntViewSet, basename="treasure-hunts
 router.register(r'clues', ClueViewSet, basename="clues")
 router.register(r'hints', HintViewSet, basename="hints")
 router.register(r'games', GameViewSet, basename="games")
+router.register(r'used-hint', GameViewSet, basename="used-hint")
 
 app_name = 'games'
 
