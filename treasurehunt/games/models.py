@@ -61,7 +61,7 @@ class Game(models.Model):
         return f'{str(self.user)} - {self.treasure_hunt.name}'
 
 
-class UsedHints(models.Model):
+class UsedHint(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     hint = models.ForeignKey(Hint, on_delete=models.CASCADE)
 

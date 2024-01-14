@@ -3,7 +3,7 @@ from django.utils import timezone
 from rest_framework import viewsets, status, views
 from rest_framework.response import Response
 
-from .models import TreasureHunt, Clue, Hint, Game, Score
+from .models import TreasureHunt, Clue, Hint, Game, Score, UsedHint
 from .serializers import TreasureHuntSerializer, ClueSerializer, HintSerializer, GameDetailSerializer, ScoreSerializer, \
     GameCreateSerializer
 from ..common.permissions import AllowAnyGET
@@ -35,6 +35,10 @@ class HintViewSet(viewsets.ModelViewSet):
     queryset = Hint.objects.all()
     serializer_class = HintSerializer
 
+
+class UsedHintsViewSet(viewsets.ModelViewSet):
+    queryset = UsedHint.objects.all()
+    serializer_class = HintSerializer
 
 class GameViewSet(viewsets.ModelViewSet):
 
