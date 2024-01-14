@@ -4,6 +4,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import useForm from "../../hooks/useForm";
 import styles from './GamePage.module.css'
 import { useNavigate } from "react-router-dom";
+import GameHints from "./GameHints";
 
 const GamePage = () => {
     const { auth } = useAuthContext();
@@ -151,10 +152,13 @@ const GamePage = () => {
                             </div>
                         </form>
                     )}
+                <GameHints hints={game.current_clue.hints}></GameHints>
+
                 </>
             ) : (
                 <h2 style={{ textAlign: 'center' }}>No active game</h2>
             )}
+
         </section>
     );
     

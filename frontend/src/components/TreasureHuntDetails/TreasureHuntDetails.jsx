@@ -80,17 +80,22 @@ const TreasureHuntDetails = () => {
     };
 
     const startGame = async () => {
-        const gameData = {
-            user: auth.user?.pk,
-            treasure_hunt: treasureHuntId,
-        };
-    
-        try {
-            await gameService.startGame(gameData);
+        if (auth.user.is_game_started) {
             navigate(`/game`);
-        } catch (error) {
-            console.log(error.message);
-            navigate(`/game`);
+        }
+        else {
+            const gameData = {
+                user: auth.user?.pk,
+                treasure_hunt: treasureHuntId,
+            };
+        
+            try {
+                await gameService.startGame(gameData);
+                navigate(`/game`);
+            } catch (error) {
+                console.log(error.message);
+                navigate(`/game`);
+            }
         }
     };
     
